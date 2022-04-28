@@ -1,8 +1,5 @@
 
-"""
-Step 1:
-	Login
-"""
+# by alecSears
 import os
 from bs4 import BeautifulSoup
 #from pw_and_user import username, password
