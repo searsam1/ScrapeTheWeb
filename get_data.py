@@ -35,7 +35,7 @@ class Edabit():
 class Test(unittest.TestCase):
 	
 	checks = [] 
-	def assert_equals(a,b,checks=checks):
+	def assert_equals(a,b,message=None,checks=checks):
 		print(a,b,sep="  ->  ")
 		checks.append(["Fail","Pass"][a==b])
 		print("\\t",checks,"\\n")
