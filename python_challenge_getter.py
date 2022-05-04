@@ -79,8 +79,8 @@ class Edabit():
 	""")
 
 	python_repo = clean("""
-	/Users/111244rfsf/Documents
-	/Repositories/theEdabitProject/python
+	/Users/111244rfsf/Documents/Repositories/
+	theEdabitProject/theEdabitProjectRepo/Python
 	""")
 	# get input link (get challenge)
 	challenge_link = input("Edabit Challenge Link?\n: ")

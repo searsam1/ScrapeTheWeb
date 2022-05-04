@@ -1,12 +1,3 @@
-# ScrapeTheWeb
-With Python
-
-A collection of python scripts where I scrape the web for data!
-Some are using selenium and some the requests module.
-
-This is the script I use to get my headers when I am sending 
-a request not using selenium.
-```
 import requests
 #from bs4 import BeautifulSoup
 def scrape_headers(headers):
@@ -25,4 +16,3 @@ method : GET
 # r = requests.get(url,headers=head)
 # soup = BeautifulSoup(r.text,'lxml')
 # parse soup .text
-```
