@@ -1,6 +1,7 @@
 
 # by alecSears
 import os
+import clipboard
 from bs4 import BeautifulSoup
 #from pw_and_user import username, password
 import time
@@ -10,13 +11,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from string import punctuation, printable
-
+challenge_link = clipboard.paste()
 
 class Edabit():
+
 
 	# for better readability 
 	# otherwise the xpaths get way 2 long
 	clean = lambda x : x.replace("\n","").replace("\t","").replace(" ","")
+	driver = webdriver.Safari()
+	driver.get(challenge_link)
+
 
 	sign_in_btn_xpath = clean(r"""
 	//*[@id="Navbar"]/div/
@@ -83,7 +88,8 @@ class Edabit():
 	theEdabitProject/theEdabitProjectRepo/Python
 	""")
 	# get input link (get challenge)
-	challenge_link = input("Edabit Challenge Link?\n: ")
+	
+
 	tests_script = f"""import unittest
 
 class Test(unittest.TestCase):
@@ -94,11 +100,6 @@ class Test(unittest.TestCase):
 		checks.append(["Fail","Pass"][a==b])
 		print("\\t",checks,"\\n")
 """
-	driver = webdriver.Safari()
-
-	def __init__(self,login_url):
-		self.login_url = login_url
-
 	def replace_quotes(self,data):
 		# add \" and \' for bash when writing to a file
 		data = data.replace("\"","\\\"").replace("'","\\'")
@@ -106,7 +107,7 @@ class Test(unittest.TestCase):
 
 	def login(self):
 		# get(load) the url supplied by the user
-		self.driver.get(self.login_url)
+		# deprecated
 		# not really sure if this works
 		self.driver.implicitly_wait(30)
 		
@@ -151,11 +152,9 @@ class Test(unittest.TestCase):
 
 
 	def download_challenge(self):
-		# for testing 
-		# VVVVVVVVVV
-		#self.driver.get('https://edabit.com/challenge/zJSF5EfPe69e9sJAc')
-		self.driver.get(self.challenge_link) # for final version.
 		
+		# used to start driver here
+
 		time.sleep(3)
 		# Challenge Instructions  
 		instructions = self.driver.find_element(by=By.XPATH, 
@@ -235,7 +234,7 @@ class Test(unittest.TestCase):
 		self.driver.close()
 
 if __name__ == '__main__':
-	e = Edabit("https://edabit.com")
+	e = Edabit()
 	#e.login()
 	e.download_challenge()
 	e.close_driver()  
