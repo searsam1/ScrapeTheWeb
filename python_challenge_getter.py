@@ -1,17 +1,21 @@
 
 # by alecSears
 import os
+
 import clipboard
+
 from bs4 import BeautifulSoup
 #from pw_and_user import username, password
 import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 from string import punctuation, printable
-challenge_link = clipboard.paste()
+challenge_link = clipboard.paste() # <---- Ran from inside Automator
 
 class Edabit():
 
@@ -87,8 +91,6 @@ class Edabit():
 	/Users/111244rfsf/Documents/Repositories/
 	theEdabitProject/theEdabitProjectRepo/Python
 	""")
-	# get input link (get challenge)
-	
 
 	tests_script = f"""import unittest
 
@@ -152,9 +154,8 @@ class Test(unittest.TestCase):
 
 
 	def download_challenge(self):
-		
-		# used to start driver here
 
+		# Wait for Challenge to load
 		time.sleep(3)
 		# Challenge Instructions  
 		instructions = self.driver.find_element(by=By.XPATH, 
@@ -169,21 +170,26 @@ class Test(unittest.TestCase):
 		tests = self.driver.find_element(by=By.XPATH, 
 			value=self.tests_xpath)
 		
-		# click code btn // get function name (thats in code)
+		# click code btn to get function name (thats in code)
 		code_btn = self.driver.find_element(by=By.XPATH, 
 			value=self.code_btn_xpath)
 		code_btn.click()
 		time.sleep(.5)
 		
-		# code field where the function name is predefined.
-		# We need this for the filename, and to start the 
-		# new script.  
+		# code field where the function name is defined.
+		# We need this for the filename(the filename is the 
+		# name of the function), and to start the 
+		# put in the new script. 
 		code = self.driver.find_element(by=By.XPATH, 
 			value=self.code_xpath)
 		
+		# get the instructions to the challenge
+		# instruc short for instruction
+		instruc_txt = instructions.text
+
 		# add \" and \' for bash when writing to a file
 		# using replace quotes
-		clean_instructions = self.replace_quotes(instructions.text).split('xxxxxxxxxx')[0]
+		clean_instructions = self.replace_quotes(instruc_txt).split('xxxxxxxxxx')[0]
 		clean_instructions = " ".join(word if not "PythonLanguages" in word
 			else self.get_last_word(word)
 			for word in clean_instructions.split()
@@ -206,7 +212,7 @@ class Test(unittest.TestCase):
 		# --OS-- <chrdir>, <mkdir>
 		os.chdir(self.python_repo)
 		os.mkdir(challenge_name)
-		os.chdir(challenge_name)
+		os.chdir(challenge_name) # <-- We are now in the Python REPO
 		
 		# create instructions, code, and test files
 		os.system(f"echo $'{clean_instructions}' > instructions.txt")
@@ -229,6 +235,11 @@ class Test(unittest.TestCase):
 		os.system("open tests.py")
 		os.system(f"open {function_name}.py")
 
+		# Git add, commit, push
+		os.system("git add .")
+		os.system(f"git commit -m 'Adding Challenge - {function_name}'")
+		os.system("git push")
+
 	def close_driver(self):
 		# probably should make this automatic
 		self.driver.close()
@@ -238,6 +249,7 @@ if __name__ == '__main__':
 	#e.login()
 	e.download_challenge()
 	e.close_driver()  
-
+# Fri May 13 00:31:03 MDT 2022 
+# last edit
 
 
