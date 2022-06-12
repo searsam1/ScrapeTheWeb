@@ -1,3 +1,4 @@
+import clipboard
 import requests
 #from bs4 import BeautifulSoup
 def scrape_headers(headers):
@@ -6,13 +7,22 @@ def scrape_headers(headers):
               for i in headers.split("\n")
               if i
         }
+    clipboard.copy(str(res))
     return res
 
 headers = """
-method : GET
+:method: GET
+:scheme: https
+:authority: www.indeed.com
+:path: /rpc/vjslog?tk=1g53rmnb1q68m802&a=vjsBind&ts=1654765870875
+Cookie: JSESSIONID=41896F6AF7468FF86C90EB0A82AC1FF9; RQ="q=stocking&l=80129&ts=1654765870479:q=Electronic+Assembly&l=Englewood%2C+CO&ts=1653289569098:q=data+analyst+entry+level&l=80129&ts=1652461921785:q=data+analyst&l=80129&ts=1652461908760&pts=1651691832638:q=&l=80129&ts=1651525192977&pts=1651521031465"; indeed_rcc="LOCALE:PREF:cmppmeta:LV:CTK:CO:UD:RQ"; CSRF=WIwsVemzAIZ6dyAbQ90Spa3RkvvC1Bh4; CTK=1fvu42t8rq01o801; MICRO_CONTENT_CSRF_TOKEN=2xMyJ1M9XUY0ydO0CRnBw8iPgY3G9IYk; pjps=1; _ga=GA1.2.1245215055.1654764713; _gid=GA1.2.695793190.1654764713; INDEED_CSRF_TOKEN=zokZb89oIPcySsQEOGZ3namgqkujP5o9; LC="co=US"; PPID=eyJraWQiOiJhNGRhMzNjZC00NWYyLTRkMzYtYjM2My02ZWZmYTc1OGUzYjMiLCJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJzdWIiOiI3OTY3MmZmYTBkOTk2NDFlIiwiYXVkIjoiYzFhYjhmMDRmIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF1dGgiOiJnb29nbGUiLCJjcmVhdGVkIjoxNTQ2NzkxOTU5MDAwLCJyZW1fbWUiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9zZWN1cmUuaW5kZWVkLmNvbSIsImV4cCI6MTY1NDc2NzM5MywiaWF0IjoxNjU0NzY1NTkzLCJsb2dfdHMiOjE2NTE1MjEwMzA5MjcsImVtYWlsIjoiYW1zZWFyczYwNDQxQGdtYWlsLmNvbSJ9.ejOUQg5_3ytoPQsBMxoP0Qg4Ke3KrG6YPYRg61d-S6yYR4nVbFdvwueSL1HKoF3oD6PnRphb2LMTIDdVzVIJDQ; RSJC=315c0aa02add88ec:465c838d7c3584a4:4421419f2f11cc8f:a9a94c21bddc741e:e8b51830a84010ff:7462c95a66b21763:341b2d3b33e1c0f3:6985655c3c64b241:0e6e56a82fd2173b:08e7972f098dac27; ROJC=4f47d0978db4f8f2:c53f025f70043a3f:e8397f619b06395b:51c2d8f94204e2d2:0990c81e9b7c9169:140445ea902586a9:b404ef8b9b6e28d5:3ffd6bfca4ae3f1c:12283ba94bfc89f4:001a090f5c28cf4d; jobAlertPopoverShown=1; PREF="TM=1654765338949:L=80129"; CO=US; LV="LA=1653289569:LV=1652461807:CV=1653289569:TS=1651520595"; UD="LA=1653289569:LV=1652461807:CV=1653289569:TS=1651520595"; IA_APPLIED=465c838d7c3584a4; IA_FILE_HASH=00000000ac9827ed1a890788b222304270f04dc76b7ae8e81f4ed6e9d8a686f166995e25639d46142bdee84f4d2e83abd7bc525eadfe3c427b1473726b6811788256f32d49b1ff1d5d4773e34b07d53ed1ba450310f1cd36352f82048b6093f28245298c05bb6aac248536eb263ee46c96dece57748d7a32f82ed7d4a4f5f765dfc6e86ee6e30114a58f8bc7be506e95917ac4a78f5eafd0699da075f45994907227bd721877059c28bdad5fad53caa60535e66e9a0b032576e443f9cd349ae2d4fa622256cd5cfa0bd9f7caf1b8f00f8861f97cdb4f0557cb08bd727d73106ff17d; RJAS=i47c6183e550cf72f:i53142256a7a83d19:i08e7972f098dac27:i0e6e56a82fd2173b:ie8b51830a84010ff:i465c838d7c3584a4; SHARED_INDEED_CSRF_TOKEN=zokZb89oIPcySsQEOGZ3namgqkujP5o9; _gcl_au=1.1.2057375763.1654764716; CMP_VISITED=1; cmppmeta="eNoBSAC3/0RY4JhZNSLVZ0TxaLx5BOlaUd7qy51MwQ6jiBURwzAyeHJL6Unf7PXzNoZ2rp5Gp2zl9JondXBRk1JWbU/Bm9MpG2a9UIBGWi5jI+o="; RF="BjYxhYZz7Iqe4H-sAEO9U1X20gcCJULWB0liXj7v7zpO-a3n01ONb2VtSyh59n63KN9k_6oEF0PaToHXZ7Pu2MsYhniKywrp8TL1Sn92_sXKboIN9pDC7igf7oIPfzdFr6_p4nThX2JZWad1ZVxje90h2f-JYyaIgGFjW22BhcQ0DEK6-vSbXnDz0MTxBtbd3pEna3DENuvN_MjuQFlgpKYKCVDyTj9SBK4_fu7gOsIjJdkPlFXh3oEe5K37bN3MA6DwuIZbl1k3Pf41Tkb5Sd17ifgY7bUW3KzBf515cT47l7kJfXf39g=="; SESSION_END_TIME=1652729976913; SESSION_ID=1g375vgtlpttb801; SESSION_START_TIME=1652729824181; indeed_rcc=LOCALE:PREF:cmppmeta:LV:CTK:UD:RQ; LOCALE=en; lastemail="amsears60441@gmail.com"; SHOE="70_zdT50leueLlDXaUcj8qE4hNaZ0SQwUid-dE4tmNu0OLNmNRL8cs6HXXNUd5UUfqnz8YVG1YtNh8mlOdT3_hVc5N_oyo8eYm7px54QWhdEPU0nU1LZPuo-Rgisbh22gfZsCLlmHeGzeS0TXlRVzyGOxw=="; SOCK="w4FFsfiyhpnmDY7poo16hCZeKXI="; LOCALE=en
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Host: www.indeed.com
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15
+Accept-Language: en-US,en;q=0.9
+Referer: https://www.indeed.com/jobs?q=stocking&l=80129&radius=15&start=10
+Connection: keep-alive
 """
-# url = "www.1234.com"
-# head = scrape_headers(headers)
-# r = requests.get(url,headers=head)
-# soup = BeautifulSoup(r.text,'lxml')
-# parse soup .text
+
+scrape_headers(headers)

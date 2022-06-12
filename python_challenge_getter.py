@@ -236,8 +236,9 @@ class Test(unittest.TestCase):
 		os.system(f"open {function_name}.py")
 
 		# Git add, commit, push
+		os.chdir(self.python_repo) # <-- so it updates old challenges
 		os.system("git add .")
-		os.system(f"git commit -m 'Adding Challenge - {function_name}'")
+		os.system(f"git commit -m 'Add -->{function_name}<--'")
 		os.system("git push")
 
 	def close_driver(self):
@@ -251,5 +252,4 @@ if __name__ == '__main__':
 	e.close_driver()  
 # Fri May 13 00:31:03 MDT 2022 
 # last edit
-
-
+# 
