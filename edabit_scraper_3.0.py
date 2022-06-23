@@ -1,15 +1,12 @@
 # %%
 from time import sleep
-import os
 import subprocess
 from bs4 import BeautifulSoup
-import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from string import punctuation, printable
 
 # %%
 class Edabit():
@@ -67,7 +64,7 @@ author = soup.find('a', style="color: rgb(41, 135, 205); font-weight: 700;").tex
 objective = "\n".join(i.text for i in soup.find_all(['p','li']))
 examples = soup.pre.text
 
-for i in [title, objective, author, examples, code, tests]:
+for i in [title, objective, author, examples, code]:
     print()
     print(i)
     print()
