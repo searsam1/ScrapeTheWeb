@@ -1,10 +1,13 @@
 # %%
+#Alec Sears
+import hashlib
+from datetime import datetime
 from time import sleep
+import os
 import subprocess
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -13,11 +16,12 @@ class Edabit():
 
     link = subprocess.run(['osascript', '-e ' 'tell app "safari"\
                         to get the url of the current tab of window 1']
-        , capture_output=True).stdout
+        , capture_output=True).stdout.strip(b'\n').decode()        
 
     def __init__(self,link=link):
         self.driver = webdriver.Safari()
-        self.driver.get(link.decode())
+        self.driver.get(link)
+        self.id = link.split("/")[-1]
 
     def wait_until_vis(self,xpath,wait_time=20):
         WebDriverWait(self.driver, wait_time).until(
@@ -53,8 +57,13 @@ source3 = eda.driver.page_source
 
 
 # %%
+
+
+# %%
 soup = BeautifulSoup(source2, 'lxml')
 code = soup.textarea.text
+
+
 
 # %%
 soup = BeautifulSoup(source1, 'lxml')
@@ -64,10 +73,41 @@ author = soup.find('a', style="color: rgb(41, 135, 205); font-weight: 700;").tex
 objective = "\n".join(i.text for i in soup.find_all(['p','li']))
 examples = soup.pre.text
 
-for i in [title, objective, author, examples, code]:
-    print()
-    print(i)
-    print()
+arr = [title, author, objective, examples, code]
+
+
+hash = eda.id
+
+os.chdir("/Users/111244rfsf/Documents/Repositories/theEdabitProject/theEdabitProjectRepo")
+try:
+    os.mkdir(hash)
+except FileExistsError:
+    pass
+
+os.chdir(hash)
+
+with open("readme.md", "w") as f:
+    f.write("# " + title + "\n<br><br>\n")
+    f.write("## " + author +"\n<br><br>\n")
+    f.write("### \"\"\"" + objective +"\"\"\"\n<br><br>\n")
+    f.write(f"[{eda.id}]({eda.link})" +"\n<br><br>\n")
+    f.write("```" + examples + "\n```\n" + "\n<br><br>\n" )
+
+
+with open("code.md", "w") as f:
+    f.write(code)    
+os.system("open readme.md")
+os.system("open code.md")
+eda.driver.close()
+
+# Git add, commit, push
+os.system('echo ".DS_Store" > .gitignore')
+os.system("git pull")
+os.system("git add .")
+os.system(f"git commit -m '{datetime.now()}'")
+os.system("git push")
+
+# %%
 
 
 
