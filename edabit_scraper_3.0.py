@@ -1,6 +1,5 @@
 # %%
 #Alec Sears
-import hashlib
 from datetime import datetime
 from time import sleep
 import os
@@ -57,6 +56,21 @@ source3 = eda.driver.page_source
 
 
 # %%
+file_exts = {
+    "C++" : [".cpp","CPP"],
+    "C#" : [".cs","csharp"],
+    "Java" : [".java","java"],
+    "JavaScript" : [".js","javaScript"],
+    "PHP" : [".php","php"],
+    "Python" : [".py", "python"],
+    "Ruby" : [".rb","ruby"],
+    "Swift" : [".swift","swift"]
+}
+
+file_ext = eda.find_by_xpath('//*[@id="Main"]/div/div/div[1]/div/div[2]/div[1]/div/div/div[1]/div[1]/div/div[1]')
+ext = file_exts[file_ext.text][0]
+ext_loc = file_exts[file_ext.text][1]
+
 
 
 # %%
@@ -64,6 +78,13 @@ soup = BeautifulSoup(source2, 'lxml')
 code = soup.textarea.text
 
 
+
+# %%
+soup = BeautifulSoup(source3, 'lxml')
+# still in alpha stages
+tests_file = soup.find_all(class_="six wide column")[0].text
+tests_file = tests_file.split("\n")
+tests_file[-1] = tests_file[-1].split("xxxxxxxxxx")[0]
 
 # %%
 soup = BeautifulSoup(source1, 'lxml')
@@ -78,7 +99,8 @@ arr = [title, author, objective, examples, code]
 
 hash = eda.id
 
-os.chdir("/Users/111244rfsf/Documents/Repositories/theEdabitProject/theEdabitProjectRepo")
+os.chdir(f"/Users/111244rfsf/Documents/Repositories/theEdabitProject/theEdabitProjectRepo/{ext_loc}")
+
 try:
     os.mkdir(hash)
 except FileExistsError:
@@ -94,17 +116,21 @@ with open("readme.md", "w") as f:
     f.write("```" + examples + "\n```\n" + "\n<br><br>\n" )
 
 
-with open("code.md", "w") as f:
-    f.write(code)    
+with open(f"code{ext}", "w") as f:
+    f.write(code)
+    for i in tests_file:
+        f.write("\n\n")
+        f.write(i)
 os.system("open readme.md")
-os.system("open code.md")
+os.system(f"open -a Visual\\ Studio\\ Code code{ext}")
 eda.driver.close()
 
 # Git add, commit, push
 os.system('echo ".DS_Store" > .gitignore')
+os.chdir("/Users/111244rfsf/Documents/Repositories/theEdabitProject/theEdabitProjectRepo")
 os.system("git pull")
 os.system("git add .")
-os.system(f"git commit -m '{datetime.now()}'")
+os.system(f"git commit -m 'Create Challenge : {eda.id} on {datetime.now()}'")
 os.system("git push")
 
 # %%
